@@ -1,0 +1,100 @@
+---
+title: "Random Variables"
+author: "Miranda Rintoul"
+date: "9/14/2022"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Binomial RVs
+
+In the genes example, X is a binomial RV with n = 3 and pi = 9/16.  What is the probability that X = 2?
+
+```{r}
+dbinom(2, size = 3, prob = 9/16)
+```
+
+Genes example: find the probability that X = 1 and X \>= 1.
+
+```{r}
+# First part: P(X = 1)
+dbinom(1, size = , prob = )
+
+# Different ways to do the second problem:
+1 - dbinom(0, size = 3, prob = 9/16) # subtraction
+1:3
+dbinom(1:3, size = 3, prob = 9/16)
+sum(dbinom(1:3, size = 3, prob = 9/16)) # add probabilities for 1-3
+```
+
+## Normal RVs
+
+The height of US males is normally distributed with mean 70 inches and standard deviation 3 inches.  What is the probability that a randomly chosen US male is below 72 inches?
+
+```{r}
+# With standardization:
+pnorm(2/3, mean = 0, sd = 1)
+pnorm(2/3)    # by default, pnorm is N(0, 1)
+
+# Directly:
+pnorm(72, mean = 70, sd = 3)
+```
+
+Package weights have a normal distribution with mean 16.1 ounces and sd 0.3 ounces. What is the probability that a randomly chosen package weighs less than 16 ounces?
+
+```{r}
+
+```
+
+What is the probability that a randomly chosen package has weight between 15.5 and 16.5 ounces?
+
+```{r}
+
+```
+
+Above what weight is the heaviest 1% of packages?
+
+```{r}
+qnorm(0.99, 16.1, 0.3) # units of W
+
+# Or, find a standardized score and convert back to W
+qnorm(0.99, 0, 1)
+qnorm(0.99, 0, 1)*0.3 + 16.1
+```
+
+What package weight is the 3rd quartile?
+
+```{r}
+
+```
+
+Suppose ten packages are randomly selected off the production line. What is the probability that exactly 6 packages have weights above 16 ounces?
+
+First, find the probability of a single package being above 16 ounces.
+
+```{r}
+1 - pnorm(16, mean = 16.1, sd = 0.3)
+pnorm(16, mean = 16.1, sd = 0.3, lower.tail = F)
+```
+
+If Y is the number of packages above 16 ounces, then Y is binomial with n = 10 and pi = 0.6306.  We can use a binomial probabilty to find the probability that exactly 6 packages have weights above 16 ounces.
+
+```{r}
+dbinom()
+```
+
+## New R Functions
+
+dbinom() - find a specific probability of a binomial distribution
+
+pnorm() - find the area (probability) to the left of a value on a normal distribution
+qnorm() - find a specific quantile/percentile of a normal distribution
+
+
+
+
+

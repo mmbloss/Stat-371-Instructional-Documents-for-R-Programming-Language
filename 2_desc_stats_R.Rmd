@@ -1,0 +1,255 @@
+---
+title: "Descriptive Statistics"
+author: "Miranda Rintoul"
+date: "9/7/2022"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Histograms
+
+Let's load the milk fat data and build a histogram.
+
+```{r}
+# "c" builds a vector of data points
+milkfat <- c(20, 38, 44, 49, 42, 21, 48, 47, 21,
+           22, 23, 26, 26, 44, 48, 29)
+
+sort(milkfat)
+sort(milkfat, decreasing = TRUE)
+```
+
+Most basic histogram:
+
+```{r}
+hist(milkfat)
+```
+
+We can set arguments to the `hist` function to add more features.
+
+```{r}
+# "mean" for title, "col" for bar colors
+hist(milkfat, main = "Histogram of Milk Fat Data",
+     col = "dodgerblue")
+```
+
+Setting breaks by hand with the `seq()` function:
+
+```{r}
+# Bins of width 5, from 20 to 50
+hist(milkfat, main = "Histogram of Milk Fat Data",
+     col = "dodgerblue", breaks = seq(20, 50, 5))
+
+# Bins of width 7, from 14 to 49
+hist(milkfat, main = "Histogram of Milk Fat Data",
+     col = "dodgerblue", breaks = seq(14, 49, 7))
+```
+
+We can also set the `breaks` option to be a single number.
+
+```{r}
+# Many breaks = narrow bins
+hist(milkfat, main = "Histogram of Milk Fat Data",
+     col = "dodgerblue", breaks = 50)
+
+# Few breaks = wide bins
+hist(milkfat, main = "Histogram of Milk Fat Data",
+     col = "dodgerblue", breaks = 4)
+```
+
+
+## Location
+
+Let's get the median and mean of the milk fat data.
+
+```{r}
+median(milkfat)
+
+# "Long hand" mean calculation
+sum(milkfat) / length(milkfat)
+
+# R shortcut mean calculation
+mean(milkfat)
+```
+
+To get the percentiles/quantiles of the data, we need the ``quantile`` function.  By default, this gives the quartiles.
+
+```{r}
+quantile(milkfat)
+```
+
+To find a specific percentile, specify the ``probs`` argument to be a vector of probabilities.  For example, let's get the 32nd, 58th, and 97th percentiles.
+
+```{r}
+quantile(milkfat, probs = c(0.32, 0.58, 0.97))
+```
+
+What if the value 49 was accidentally recorded as 94?
+
+```{r}
+milkfat_error <- c(20, 38, 44, 94, 42, 21, 48, 47, 21,
+           22, 23, 26, 26, 44, 48, 29)
+
+# Find mean and median of new error data
+```
+
+
+## Spread
+
+Let's begin by finding the IQR of the original milkfat data.
+
+```{r}
+IQR(milkfat)
+```
+
+This is consistent with our previous output:  we saw that the 25th percentile of the data is 22.75, and the 75th percentile is 44.75.  22.75 - 44.75 = 22.
+
+The ``range`` function in R will output the minimum and maximum, by default.  So, we need to use subtraction to find the range.
+
+```{r}
+range(milkfat)
+```
+
+The range is 49 - 20 = 29.  
+
+There are a few different ways we can find the standard deviation. Long way:
+
+```{r}
+mean(milkfat)
+
+# Deviations from mean
+milkfat - mean(milkfat)
+
+# Sum of squared deviations
+sum((milkfat - mean(milkfat))^2) 
+
+# Sample sd via formula
+sqrt(sum((milkfat - mean(milkfat))^2)/15) 
+sqrt(sum((milkfat - mean(milkfat))^2)/(length(milkfat)-1))
+
+```
+
+Short way:
+
+```{r}
+# Sample sd shortcut
+sd(milkfat)
+
+# Sample variance shortcut
+var(milkfat)
+```
+
+Finally, let's see how these measures of spread change when we look at the data with an error.
+
+```{r}
+# Compare IQR, range, and SD for both datasets
+
+```
+
+
+## Other graphs
+
+Let's make a very basic boxplot, then improve on it.
+
+```{r}
+boxplot(milkfat)
+
+boxplot(milkfat, horizontal = TRUE, xlab = "Milk Fat")
+```
+
+Here is an example with multiple boxplots:
+
+```{r}
+A <- c(67, 78, 88, 65, 77, 72, 73, 82, 85, 90)
+B <- c(77, 61, 85, 75, 77, 73, 81, 74, 83, 89)
+C <- c(84, 82, 79, 76, 88, 90, 91, 85, 82, 94)
+
+boxplot(A, B, C, main = "Exam Scores by Program",
+        col = c("#D81B60", "#1E88E5", "#FFC107"),
+        names = c("A", "B", "C"))
+```
+
+
+## Multiple datasets
+
+We have data on milk fat for cows with and without supplements.
+
+```{r}
+milkfat_supp <- milkfat
+milkfat_nosupp <- c(20, 21, 22, 22, 23, 24, 18, 27, 25,
+                    25, 19, 21, 28, 18, 17, 21, 23)
+```
+
+Let's build boxplots with default axes.
+
+```{r}
+par(mfrow = c(1, 2))  # View 2 plots at once
+hist(milkfat_supp, main = "Supplement Milk Fat",
+     col = "dodgerblue")
+
+hist(milkfat_nosupp, main = "No Supplement Milk Fat",
+     col = "dodgerblue")
+```
+
+Now, let's fix the axes so that the x and y axes (and bins) are consistent.
+
+```{r}
+par(mfrow = c(1, 2))  # View 2 plots at once
+hist(milkfat_supp, main = "Supplement Milk Fat",
+     col = "dodgerblue", ylim = c(1, 8),
+     breaks = seq(16, 49, 3))
+
+hist(milkfat_nosupp, main = "No Supplement Milk Fat",
+     col = "dodgerblue", ylim = c(1, 8),
+     breaks = seq(16, 49, 3))
+```
+
+We can build a boxplot as well.
+
+```{r}
+boxplot(milkfat_supp, milkfat_nosupp, main = "Milk Fat",
+        names = c("Supplement", "No Supplement"))
+```
+
+Finally, we can compare numeric summaries.
+
+```{r}
+mean(milkfat_supp); mean(milkfat_nosupp)
+median(milkfat_supp); median(milkfat_nosupp)
+sd(milkfat_supp); sd(milkfat_nosupp)
+```
+
+We can combine the vectors easily in R if we want to summarize the entire group of cows at once.
+
+```{r}
+combined <- c(milkfat_supp, milkfat_nosupp)
+combined
+```
+
+From here we can create all of the usual summaries (histogram, mean, sd, etc.) for a single set of data.
+
+
+## New R Functions
+
+c() - combine several values into a data vector
+sort() - sort a data vector into ascending (or descending) order
+hist() - create a histogram of a data vector
+
+median() - find the median value of a data vector
+sum() - add all of the values in a data vector
+length() - find the length (number of values) of a data vector
+mean() - find the average value of a data vector
+quantile() - find any quantile/percentile of a data vector
+
+IQR() - find the interquartile range of a data vector
+range() - find the range of a data vector
+sqrt() - find the square root of a number
+sd() - find the standard deviation of a data vector
+var() - find the variance of a data vector
+
+boxplot() - create a boxplot of one or more data vectors
+

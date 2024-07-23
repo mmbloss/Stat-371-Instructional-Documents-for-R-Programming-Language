@@ -1,0 +1,71 @@
+---
+title: "Sampling Distributions and Estimation"
+author: "Miranda Rintoul"
+date: "9/26/2022"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Distribution of X-bar
+
+Broiler weights have a N(1.397, 0.161^2) distribution.  What is the probability that a randomly selected broiler has weight below 1.2?
+
+```{r}
+pnorm(1.2, 1.387, 0.161)
+```
+
+If we sample 5 broilers, what is the probability that the average weight is below 1.2?
+
+```{r}
+pnorm()
+```
+
+If we sample 50 broilers, what is the probability that the average weight is below 1.2?
+
+```{r}
+pnorm()
+```
+
+Now consider the sample total. What is the 95th percentile for the total weight of 50 broilers?
+
+```{r}
+qnorm()
+```
+
+## CLT
+
+```{r}
+# "x" is 15 points of normal data
+x <- rnorm(15, 0, 1)
+
+qqnorm(x)
+```
+
+Using the CLT, we can approximate the mean number of moths in 100 traps as N(0.5, (0.7^2)/100).  What is the probability that the mean number of moths in 100 traps is above 0.75?
+
+```{r}
+pnorm()
+```
+
+Suppose we have a population proportion pi = 0.07.  Then a sample proportion from a sample of 300 should have a normal distribution with mean 0.07 and variance (0.07*0.93)/300.
+
+What is the probability that p_hat is less than 8/300?
+
+```{r}
+pnorm()
+```
+
+## New R Functions
+
+qqnorm() - create a normal qq-plot of a data vector
+rnorm() - draw a random sample from a normal distribution
+
+
+
+
+
+
